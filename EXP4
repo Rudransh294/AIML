@@ -1,0 +1,72 @@
+import pandas as pd
+import os
+
+# Import data from a CSV file
+def import_data(file_path):
+    if not os.path.exists(file_path):
+        print(f"File not found: {file_path}")
+        return None
+    try:
+        df = pd.read_csv(file_path)
+        print("Data imported successfully.")
+        return df
+    except Exception as e:
+        print(f"Error importing data: {e}")
+        return None
+
+# Export data to a CSV file
+def export_data(df, export_path):
+    if df is None:
+        print("No data to export!")
+        return
+    try:
+        df.to_csv(export_path, index=False)
+        print(f"Data exported successfully to {export_path}.")
+    except Exception as e:
+        print(f"Error exporting data: {e}")
+
+# Function to show dataset details
+def show_details(df):
+    if df is None:
+        print("No data to display details for.")
+        return
+    print("\n--- Dataset Details ---\n")
+    
+    # Number of rows and columns
+    print(f"Number of rows: {df.shape[0]}")
+    print(f"Number of columns: {df.shape[1]}")
+    
+    # Display the first five rows
+    print("\nFirst 5 rows:")
+    print(df.head())
+    
+    # Dataset size (number of elements)
+    print(f"\nSize of dataset (number of elements): {df.size}")
+    
+    # Count of missing values in each column
+    print("\nMissing values in each column:")
+    print(df.isnull().sum())
+    
+    # Descriptive statistics for numerical columns
+    print("\nSummary statistics for numerical columns:")
+    print(f"Sum:\n{df.select_dtypes(include='number').sum()}")
+    print(f"Average:\n{df.select_dtypes(include='number').mean()}")
+    print(f"Minimum values:\n{df.select_dtypes(include='number').min()}")
+    print(f"Maximum values:\n{df.select_dtypes(include='number').max()}")
+
+# Example usage
+if __name__ == "__main__":
+    # Provide the file path to import the dataset (Use full path if necessary)
+    file_path = 'example_data.csv'
+    
+    # Import the dataset
+    df = import_data(file_path)
+    
+    # Show details of the dataset if it was imported successfully
+    show_details(df)
+    
+    # Provide the file path to export the dataset
+    export_path = 'exported_data.csv'
+    
+    # Export the dataset (optional, if any changes are made)
+    export_data(df, export_path)
